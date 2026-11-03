@@ -1,0 +1,165 @@
+# Consulting career upgrades. Field reference is in tech.toml; balance is in career_skill_trees.xlsx.
+#
+# Signature mechanic: teams and travel. Work alongside other pets, or disappear from the map for big
+# paydays. Neither system is built yet, but Case Prep's job fair perks and the internship perks work.
+
+[career]
+id = "consulting"
+name = "Consulting"
+summary = "Teams and travel: work alongside other pets, or disappear from the map for big paydays"
+
+[[path]]
+id = "case_prep"
+name = "Case Prep"
+focus = "Information other players don't have"
+buildings = ["steinberg_dietrich"]
+
+[[path.tier]]
+name = "Case in Point"
+later = ["See the odds of each outcome before choosing in a task event"]
+
+[[path.tier]]
+name = "Market Sizing"
+perks = ["See how many pets applied to each role (but not who) before applications lock"]
+effects = { see_counts = true }
+
+[[path.tier]]
+name = "Due Diligence"
+perks = [
+    "See the skill levels of everyone who applied to your roles, and change one application after seeing them",
+]
+effects = { see_rivals = true, late_changes = 1 }
+
+[[path.tier]]
+name = "Superday"
+perks = ["Unlocks MBB roles that pay 70% more but need a top-3 minigame score"]
+later = ["Plus a free quarter-zip"]
+effects = { unlocks = ["mbb"] }
+
+[[path.tier]]
+name = "Hypothesis-Driven"
+perks = ["MBB roles only need a top-4 score"]
+effects = { top_cutoff = 1 }
+
+[[path]]
+id = "billable"
+name = "Billable Hours"
+focus = "Travel weeks and big paychecks"
+buildings = ["vance"]
+
+[[path.tier]]
+name = "Business Casual"
+perks = ["Tasks pay +10%"]
+effects = { task_pay = 0.10 }
+
+[[path.tier]]
+name = "Coffee Chat"
+later = ["Training at the same building as another pet gives you both +40% pay"]
+
+[[path.tier]]
+name = "Expense Report"
+perks = ["While you hold an internship, food is free and the internship pays 20% more"]
+effects = { intern_free_food = true, internship_pay = 0.2 }
+
+[[path.tier]]
+name = "Client Travel"
+later = [
+    "Send your pet on the road Monday to Thursday for 60% of a week's internship pay; it can't train, work tasks, or be scouted while away",
+]
+
+[[path.tier]]
+name = "Exit Opp"
+perks = ["When an internship ends, collect a week and a half of its pay as a lump sum"]
+effects = { exit_bonus_weeks = 1.5 }
+
+[[path]]
+id = "staffing"
+name = "The Staffing Model"
+focus = "Teams of pets"
+buildings = ["houston"]
+
+[[path.tier]]
+name = "Club Application"
+later = [
+    "Unlocks pro-bono tasks at Houston Hall that give you and one other pet +20% skill gain when done together",
+]
+
+[[path.tier]]
+name = "Pro Bono Project"
+later = ["Finishing a team task counts as a \"project\" for both pets"]
+
+[[path.tier]]
+name = "Engagement Manager"
+later = [
+    "Form a team of up to 3 pets, and gain bonus skill equal to 20% of each teammate's skill gain (they lose nothing)",
+]
+
+[[path.tier]]
+name = "Staffed on the Big One"
+later = [
+    "Unlocks team roles, where your whole team applies together and is scored on its combined minigame result",
+]
+
+[[path.tier]]
+name = "Partner"
+later = [
+    "Teams grow to 5 and can include pets from other houses, and you earn a bonus equal to 20% of every teammate's internship pay (they lose nothing)",
+]
+
+# Job fair roles.
+
+[[role]]
+id = "wharton_pro_bono"
+company = "Wharton Undergraduate Consulting Club"
+title = "Pro Bono Consultant"
+pay = 0.8
+
+[[role]]
+id = "accenture_strategy"
+company = "Accenture"
+title = "Strategy Intern"
+requires = { case_prep = 1 }
+pay = 1.0
+
+[[role]]
+id = "oliver_wyman"
+company = "Oliver Wyman"
+title = "Summer Consultant"
+requires = { case_prep = 2 }
+pay = 1.1
+
+[[role]]
+id = "deloitte_scholar"
+company = "Deloitte"
+title = "Summer Scholar"
+requires = { billable = 1 }
+pay = 1.0
+
+[[role]]
+id = "ey_parthenon"
+company = "EY-Parthenon"
+title = "Associate Intern"
+requires = { billable = 2 }
+pay = 1.1
+
+[[role]]
+id = "kearney_ba"
+company = "Kearney"
+title = "Business Analyst Intern"
+requires = { staffing = 1 }
+pay = 1.0
+
+[[role]]
+id = "lek_associate"
+company = "L.E.K. Consulting"
+title = "Summer Associate"
+requires = { staffing = 2 }
+pay = 1.1
+
+[[role]]
+id = "mckinsey_ba"
+company = "McKinsey & Company"
+title = "Summer Business Analyst"
+unlock = "mbb"
+top = 3
+pay = 1.7

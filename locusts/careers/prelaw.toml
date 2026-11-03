@@ -1,0 +1,185 @@
+# Pre-Law career upgrades. Field reference is in tech.toml; balance is in career_skill_trees.xlsx.
+#
+# Signature mechanic: direct duels against other pets, and protecting players who are away. Neither
+# system is built yet, but BigLaw's money perks, Amicus Brief, and the clerkship roles work.
+
+[career]
+id = "prelaw"
+name = "Pre-Law"
+summary = "Direct duels against other pets, and protecting players who are away"
+
+[[path]]
+id = "mock_trial"
+name = "Mock Trial"
+focus = "Duels against other pets"
+buildings = ["irvine"]
+
+[[path.tier]]
+name = "Mock Trial Team"
+later = [
+    "Once a day, challenge a pet in your house to a duel minigame where each side stakes 10 coins; duels count as practice (+5% job fair score)",
+]
+
+[[path.tier]]
+name = "Cross-Examination"
+later = [
+    "See your opponent's skills before a duel, and each duel you win gives +1% job fair score, up to +8%",
+]
+
+[[path.tier]]
+name = "Closing Argument"
+later = [
+    "Duel wins count as advocacy experience, so you qualify for pre-law roles one skill short",
+]
+
+[[path.tier]]
+name = "Moot Court Champion"
+later = [
+    "Challenge any pet on the server for stakes of 25 coins (each pet can be challenged once a day)",
+]
+
+[[path.tier]]
+name = "Objection!"
+later = [
+    "Once per semester, take a job fair role from the pet who won it by beating them in a duel; they keep half pay for that week",
+]
+
+[[path]]
+id = "biglaw"
+name = "BigLaw"
+focus = "Money, including while you're away"
+buildings = ["silverman"]
+
+[[path.tier]]
+name = "Six-Minute Increments"
+perks = [
+    "Short sessions pay in full: once a day, pulling your pet out of a task bills the rest of the hour",
+]
+effects = { billed_hours = true }
+
+[[path.tier]]
+name = "Summer Associate"
+perks = ["Food is half price"]
+effects = { meal_discount = 0.5 }
+
+[[path.tier]]
+name = "Document Review"
+perks = [
+    "Whenever your pet would sit idle at home, it earns 70% of normal task pay (money only, no skill)",
+]
+effects = { idle_pay = 0.70 }
+
+[[path.tier]]
+name = "Lockstep"
+perks = [
+    "Internship pay +40%, plus another 20% for each fair you keep the same internship",
+]
+effects = { internship_pay = 0.4, loyalty_pay = 0.2 }
+
+[[path.tier]]
+name = "Equity Partner"
+perks = [
+    "Earn a bonus equal to 5% of all internship pay on the server (no one loses anything), and your own internship pays 20% more",
+]
+effects = { partner_share = 0.05, internship_pay = 0.2 }
+
+[[path]]
+id = "public_interest"
+name = "Public Interest"
+focus = "Protecting other players"
+buildings = ["gittis"]
+
+[[path.tier]]
+name = "Legal Aid Clinic"
+perks = ["Unlocks pro-bono tasks at Gittis that also give +10% skill gain"]
+effects = { task_site = { building = "gittis", name = "Legal aid", xp = 0.10 } }
+
+[[path.tier]]
+name = "Guardian ad Litem"
+later = [
+    "Keep a pet on autopilot from getting hungry or tired (it still makes no progress), and each one you cover counts as a \"project\"",
+]
+
+[[path.tier]]
+name = "Amicus Brief"
+perks = ["Each fair, back another pet before your first scored run: they get +10% minigame score and you get +20%"]
+effects = { amicus_score = 0.2, amicus_backed_score = 0.1 }
+
+[[path.tier]]
+name = "Supreme Court Clerk"
+perks = [
+    "Unlocks clerkship roles that pay 80%, which only Public Interest pets can apply to",
+]
+effects = { unlocks = ["clerkship"] }
+
+[[path.tier]]
+name = "Landmark Case"
+perks = [
+    "At every remaining fair, a clerkship paying 70% is reserved for you if you meet its requirements",
+]
+effects = { reserved_roles = true }
+
+# Job fair roles.
+
+[[role]]
+id = "phila_bar_clerk"
+company = "Philadelphia Bar Association"
+title = "Law Clerk"
+pay = 0.8
+
+[[role]]
+id = "da_trial"
+company = "Philadelphia District Attorney's Office"
+title = "Trial Intern"
+requires = { mock_trial = 1 }
+pay = 1.0
+
+[[role]]
+id = "defender_trial"
+company = "Defender Association of Philadelphia"
+title = "Trial Intern"
+requires = { mock_trial = 2 }
+pay = 1.1
+
+[[role]]
+id = "dechert_sa"
+company = "Dechert"
+title = "Summer Associate"
+requires = { biglaw = 1 }
+pay = 1.0
+
+[[role]]
+id = "morgan_lewis_sa"
+company = "Morgan Lewis"
+title = "Summer Associate"
+requires = { biglaw = 2 }
+pay = 1.1
+
+[[role]]
+id = "cls_intern"
+company = "Community Legal Services"
+title = "Legal Intern"
+requires = { public_interest = 1 }
+pay = 1.0
+
+[[role]]
+id = "aclu_pa"
+company = "ACLU of Pennsylvania"
+title = "Policy Intern"
+requires = { public_interest = 2 }
+pay = 1.1
+
+[[role]]
+id = "third_circuit_clerk"
+company = "Third Circuit Court of Appeals"
+title = "Judicial Clerk"
+unlock = "clerkship"
+pay = 0.8
+
+[[role]]
+id = "pa_supreme_clerk"
+company = "Supreme Court of Pennsylvania"
+title = "Reserved Clerkship"
+unlock = "clerkship"
+reserved = true
+pay = 0.7

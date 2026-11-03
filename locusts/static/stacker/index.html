@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hey Day Stacker · practice</title>
+<style>
+  :root { --cream: #ece2c8; --brick: #b0483a; --ink: #281c22; --leaf: #68864e; }
+  body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+         background: var(--ink); color: var(--cream); font-family: ui-monospace, monospace; }
+  header { display: flex; gap: 1.2rem; align-items: baseline; margin: 0.8rem 0 0.4rem; }
+  h1 { font-size: 16px; margin: 0; color: var(--brick); letter-spacing: 1px; }
+  a { color: var(--cream); font-size: 12px; }
+  #hud { display: flex; justify-content: space-between; font-size: 13px; padding: 0 2px 4px; }
+  #hearts { color: var(--brick); letter-spacing: 2px; }
+  #stage { position: relative; }
+  canvas { display: block; image-rendering: pixelated; border: 3px solid var(--cream); touch-action: none; }
+  #overlay { position: absolute; inset: 3px; display: flex; flex-direction: column; justify-content: center;
+             align-items: center; gap: 0.6rem; text-align: center; background: rgba(40, 28, 34, 0.82);
+             font-size: 13px; padding: 1rem; }
+  #overlay[hidden] { display: none; }
+  #overlay h2 { margin: 0; font-size: 20px; color: var(--cream); }
+  #overlay .big { font-size: 40px; color: var(--brick); }
+  #overlay .note { color: #b8ad93; font-size: 11px; }
+  button { font: inherit; background: var(--brick); color: var(--cream); border: 2px solid var(--cream);
+           padding: 0.4rem 0.9rem; cursor: pointer; }
+  label { font-size: 12px; }
+  .ok { color: var(--leaf); }
+  .bad { color: var(--brick); }
+</style>
+</head>
+<body>
+<header>
+  <h1>HEY DAY STACKER</h1>
+  <span id="mode">practice</span>
+  <a href="/">back to campus</a>
+</header>
+<div id="stage">
+  <div id="hud"><span id="time"></span><span id="score"></span><span id="hearts"></span></div>
+  <canvas id="game" width="160" height="240"></canvas>
+  <div id="overlay">
+    <h2 id="overlay-title">Hey Day Stacker</h2>
+    <div id="overlay-body">Build the junior class tower on College Green. Overhang gets trimmed off, missing
+      the tower costs a hit, and perfect drops score a bonus.<br>
+      Space, a click, or a tap drops the block.</div>
+    <label><input type="checkbox" id="ocaml"> OCaml Trauma (+10% time)</label>
+    <button id="start">Start practice run</button>
+    <div class="note" id="start-note">Enter also starts a run.</div>
+  </div>
+</div>
+<script type="module" src="/static/stacker/game.mjs"></script>
+</body>
+</html>

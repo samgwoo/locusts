@@ -1,0 +1,237 @@
+# Events that come up while a pet works, loaded by locusts/events.py. One comes up after every
+# Config.event_hours of work, and waits Config.event_window_minutes for its player.
+#
+# Each event has an id, title, text, `when` ("training", "task", or "work" for either), and options.
+# Optional: careers = [...] and buildings = [...] to only come up for those.
+#
+# An option has a label and effects, from:
+#   xp       hours of skill gain in the path being trained (training events only), at the base rate
+#   money    dollars
+#   energy   energy points (out of 100 before fitness)
+#   fullness fullness points (out of 100)
+#   gpa      GPA points (it runs 0 to 4.0)
+#
+# One option: a free chance, all upside; ignoring it costs nothing. Two options: a tradeoff where each
+# gains one thing and gives up a smaller other, so both come out a little ahead; a player who isn't
+# around gets neither. For scale, an hour of work is about 10 XP, $3, or 12.5 energy.
+
+# --- Free chances ---
+
+[[event]]
+id = "pizza"
+when = "work"
+title = "Leftover pizza"
+text = "A club meeting ended early, and there's half a pizza left on the table."
+options = [{ label = "Grab a slice", effects = { fullness = 25 } }]
+
+[[event]]
+id = "coffee_cart"
+when = "work"
+title = "Free coffee samples"
+text = "A new coffee cart is handing out samples by the entrance."
+options = [{ label = "Take one", effects = { energy = 15 } }]
+
+[[event]]
+id = "penncard"
+when = "work"
+title = "A lost PennCard"
+text = "There's a PennCard on the floor. The photo looks like it was taken during NSO."
+options = [{ label = "Turn it in at the front desk", effects = { gpa = 0.03 } }]
+
+[[event]]
+id = "downpour"
+when = "work"
+title = "It starts pouring"
+text = "Rain is coming down sideways on Locust Walk. Nobody's leaving for a while."
+options = [{ label = "Wait it out with tea", effects = { energy = 10 } }]
+
+[[event]]
+id = "tip"
+when = "task"
+title = "A generous regular"
+text = "Someone who comes in every day leaves a tip and says you're doing great."
+options = [{ label = "Say thanks", effects = { money = 4 } }]
+
+[[event]]
+id = "club_fair"
+when = "work"
+title = "The club fair is on"
+text = "Every club on campus has a table on Locust Walk, and most of them have candy."
+options = [{ label = "Grab some candy", effects = { fullness = 15 } }]
+
+[[event]]
+id = "quiet_floor"
+when = "training"
+buildings = ["van_pelt"]
+title = "The quiet floor is quiet"
+text = "For once, nobody on the sixth floor of Van Pelt is on a call."
+options = [{ label = "Lock in", effects = { xp = 1.0 } }]
+
+# --- Tradeoffs ---
+
+[[event]]
+id = "office_hours"
+when = "training"
+title = "Office hours are open"
+text = "The TA's office hours started ten minutes ago, and the line is short."
+options = [
+    { label = "Go", effects = { gpa = 0.06, energy = -10 } },
+    { label = "Keep working instead", effects = { xp = 1.2, gpa = -0.02 } },
+]
+
+[[event]]
+id = "study_partner"
+when = "training"
+title = "A study partner"
+text = "Someone at the next table is working through the same material."
+options = [
+    { label = "Team up", effects = { xp = 1.5, energy = -8 } },
+    { label = "Quiz each other on an old exam", effects = { gpa = 0.04, xp = -0.5 } },
+]
+
+[[event]]
+id = "pset"
+when = "training"
+title = "A problem set is due tonight"
+text = "The deadline is midnight, and you haven't started."
+options = [
+    { label = "Finish it now", effects = { gpa = 0.05, energy = -12 } },
+    { label = "Ask for an extension and keep training", effects = { xp = 1.5, gpa = -0.03 } },
+]
+
+[[event]]
+id = "couch"
+when = "training"
+title = "An empty couch"
+text = "The good couch by the window is free for once."
+options = [
+    { label = "Take a power nap", effects = { energy = 20, xp = -0.6 } },
+    { label = "Push through", effects = { xp = 1.2, energy = -10 } },
+]
+
+[[event]]
+id = "wawa"
+when = "training"
+title = "Wawa run"
+text = "Your study group is heading to the Wawa on Spruce."
+options = [
+    { label = "Go along", effects = { fullness = 40, money = -3 } },
+    { label = "Keep studying", effects = { xp = 1.0, fullness = -10 } },
+]
+
+[[event]]
+id = "printer"
+when = "training"
+title = "The printer jams"
+text = "The only printer on the floor is blinking, and there's a line forming."
+options = [
+    { label = "Fix it for everyone", effects = { gpa = 0.03, energy = -6 } },
+    { label = "Read on your laptop instead", effects = { xp = 1.0, gpa = -0.01 } },
+]
+
+[[event]]
+id = "professor"
+when = "training"
+title = "Your professor sits down nearby"
+text = "They're grading, but they nod at you."
+options = [
+    { label = "Ask about their research", effects = { gpa = 0.05, energy = -8 } },
+    { label = "Keep your head down", effects = { xp = 1.0, gpa = -0.01 } },
+]
+
+[[event]]
+id = "ta_gig"
+when = "training"
+title = "A TA spot opens up"
+text = "The intro class needs a grader for the rest of the semester."
+options = [
+    { label = "Take it", effects = { money = 8, xp = -0.5 } },
+    { label = "Stay focused on your own work", effects = { xp = 1.2, energy = -8 } },
+]
+
+[[event]]
+id = "overtime"
+when = "task"
+title = "One more hour?"
+text = "The shift lead is short-staffed and asks if you can stay late."
+options = [
+    { label = "Stay late", effects = { money = 6, energy = -15 } },
+    { label = "Leave on time", effects = { energy = 12, money = -2 } },
+]
+
+[[event]]
+id = "tour"
+when = "task"
+title = "A campus tour stops by"
+text = "The guide, walking backwards, asks if anyone wants to tell the prefrosh what Penn is really like."
+options = [
+    { label = "Give them the real Penn experience", effects = { money = 5, energy = -8 } },
+    { label = "Point them to the Quad and keep working", effects = { energy = 8, money = -2 } },
+]
+
+[[event]]
+id = "spill"
+when = "task"
+title = "Something spilled"
+text = "Someone knocked over an entire iced latte by the door."
+options = [
+    { label = "Clean it up", effects = { money = 4, energy = -6 } },
+    { label = "Put out a wet floor sign and take a break", effects = { energy = 10, money = -1 } },
+]
+
+# --- Careers ---
+
+[[event]]
+id = "pennapps"
+when = "training"
+careers = ["tech"]
+title = "PennApps is this weekend"
+text = "The hackathon has free food, prizes, and nobody sleeping."
+options = [
+    { label = "Sign up", effects = { xp = 2.0, energy = -15 } },
+    { label = "Help run the snack table", effects = { money = 5, xp = -0.5 } },
+]
+
+[[event]]
+id = "case_comp"
+when = "training"
+careers = ["consulting"]
+title = "A case competition"
+text = "The consulting club is short one person for a team."
+options = [
+    { label = "Compete", effects = { xp = 2.0, energy = -15 } },
+    { label = "Judge a practice round instead", effects = { gpa = 0.04, xp = -0.5 } },
+]
+
+[[event]]
+id = "stock_tip"
+when = "training"
+careers = ["finance"]
+title = "A tip in the trading club Slack"
+text = "Someone swears a stock is about to pop."
+options = [
+    { label = "Paper-trade it and see", effects = { xp = 1.5, energy = -8 } },
+    { label = "Ignore it and prep technicals", effects = { gpa = 0.04, xp = -0.5 } },
+]
+
+[[event]]
+id = "moot_court"
+when = "training"
+careers = ["prelaw"]
+title = "Moot court tryouts"
+text = "The team posted a last-minute tryout slot."
+options = [
+    { label = "Try out", effects = { xp = 2.0, energy = -15 } },
+    { label = "Read cases instead", effects = { gpa = 0.05, xp = -0.6 } },
+]
+
+[[event]]
+id = "shadowing"
+when = "training"
+careers = ["premed"]
+title = "A shadowing shift opens up"
+text = "A resident at HUP can take one more student this afternoon."
+options = [
+    { label = "Shadow", effects = { xp = 2.0, energy = -15 } },
+    { label = "Do MCAT practice instead", effects = { gpa = 0.05, energy = -6 } },
+]

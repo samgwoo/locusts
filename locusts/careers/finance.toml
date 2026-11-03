@@ -1,0 +1,175 @@
+# Finance career upgrades. Field reference is in tech.toml; balance is in career_skill_trees.xlsx.
+#
+# Signature mechanic: owning things. Market investments, and Sansom Street restaurants that other pets
+# eat at. Investing and shorting work (The Markets) and so do IB roles; restaurants aren't built yet.
+
+[career]
+id = "finance"
+name = "Finance"
+summary = "Owning things: market investments and Sansom Street restaurants other pets eat at"
+
+[[path]]
+id = "banking"
+name = "Investment Banking"
+focus = "Working through exhaustion"
+buildings = ["huntsman"]
+
+[[path.tier]]
+name = "Seamless Dinner"
+perks = ["A pet that gets hungry at a building has a full meal delivered at the normal price instead of DoorDash"]
+effects = { delivered_meals = true }
+
+[[path.tier]]
+name = "100-Hour Week"
+perks = ["Training while tired gives +25% skill instead of a penalty"]
+effects = { tired_training = 0.25 }
+
+[[path.tier]]
+name = "Excel Shortcuts Only"
+perks = ["Tasks pay a third more"]
+effects = { task_pay = 0.333 }
+
+[[path.tier]]
+name = "Bulge Bracket"
+perks = [
+    "Unlocks IB roles that pay 75% more but need a top-3 minigame score; you lose the internship if your pet gets exhausted",
+]
+effects = { unlocks = ["ib"] }
+
+[[path.tier]]
+name = "Burnout Immunity"
+perks = [
+    "Your pet never gets too tired to stay at a building; sleep still drains, and getting hungry still sends it home",
+]
+effects = { burnout_immunity = true }
+
+[[path]]
+id = "markets"
+name = "The Markets"
+focus = "Investing (high variance)"
+buildings = ["mcneil"]
+
+[[path.tier]]
+name = "Robinhood Account"
+perks = [
+    "Invest up to a quarter of your money; the market drifts up about 1% a day with swings up to 5% either way",
+]
+effects = { market = { max_share = 0.25, drift = 0.01, swing = 0.05 } }
+
+[[path.tier]]
+name = "Index Funds"
+perks = ["Invest up to three quarters of your money, and daily losses are capped at 2%"]
+effects = { market = { max_share = 0.75, loss_cap = 0.02 } }
+
+[[path.tier]]
+name = "Options Trading"
+perks = [
+    "Daily swings double to 10% either way and the drift rises to 1.5%, with the 2% loss cap still in place",
+]
+effects = { market = { drift = 0.015, swing = 0.10 } }
+
+[[path.tier]]
+name = "Hedge Fund Intern"
+perks = ["Invest all of your money, and the drift rises to 2.5% a day"]
+effects = { market = { max_share = 1.0, drift = 0.025 } }
+
+[[path.tier]]
+name = "Short Seller"
+perks = [
+    "Once per fair, bet up to half your money that a chosen pet wins no role, doubling it if you're right; the target loses nothing, and you get your bet back if it doesn't apply",
+]
+effects = { short_seller = true }
+
+[[path]]
+id = "private_equity"
+name = "Private Equity"
+focus = "Owning Sansom Street"
+buildings = ["lauder_fischer"]
+
+[[path.tier]]
+name = "Cold LinkedIn Messages"
+perks = [
+    "Unlocks deal-sourcing tasks at Lauder Fischer that pay 10% more than normal tasks",
+]
+effects = { task_site = { building = "lauder_fischer", name = "Deal sourcing", pay = 0.10 } }
+
+[[path.tier]]
+name = "Modeling Test"
+later = ["Counts as a \"project\" for role requirements"]
+
+[[path.tier]]
+name = "LBO"
+later = [
+    "Buy a stake in a Sansom Street restaurant and collect half of what any pet spends there",
+]
+
+[[path.tier]]
+name = "Roll-Up"
+later = [
+    "Own a second restaurant, your cut rises to 60%, and other PE pets must outbid you to take one",
+]
+
+[[path.tier]]
+name = "Pricing Power"
+later = [
+    "Your restaurants are the only places selling premium food, which restores hunger twice as fast, and you eat free",
+]
+
+# Job fair roles.
+
+[[role]]
+id = "wigg_analyst"
+company = "Wharton Investment & Trading Group"
+title = "Analyst"
+pay = 0.8
+
+[[role]]
+id = "lazard_sa"
+company = "Lazard"
+title = "Summer Analyst"
+requires = { banking = 1 }
+pay = 1.0
+
+[[role]]
+id = "evercore_sa"
+company = "Evercore"
+title = "Summer Analyst"
+requires = { banking = 2 }
+pay = 1.1
+
+[[role]]
+id = "vanguard_intern"
+company = "Vanguard"
+title = "Investment Intern"
+requires = { markets = 1 }
+pay = 1.0
+
+[[role]]
+id = "sig_trading"
+company = "Susquehanna (SIG)"
+title = "Assistant Trader Intern"
+requires = { markets = 2 }
+pay = 1.1
+
+[[role]]
+id = "comcast_ventures"
+company = "Comcast Ventures"
+title = "Venture Intern"
+requires = { private_equity = 1 }
+pay = 1.0
+
+[[role]]
+id = "blackstone_pe"
+company = "Blackstone"
+title = "Private Equity Summer Analyst"
+requires = { private_equity = 2 }
+pay = 1.1
+
+[[role]]
+id = "goldman_ib"
+company = "Goldman Sachs"
+title = "Investment Banking Summer Analyst"
+unlock = "ib"
+top = 3
+pay = 1.75
+lost_on_exhaustion = true

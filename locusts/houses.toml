@@ -1,0 +1,76 @@
+# College houses, loaded by locusts/houses.py. A pet picks one when it hatches and lives there: it walks
+# home to it, sleeps there, and counts toward its house on the leaderboard.
+#
+# Each house has an id, name, map_name (a building in locusts/static/map/buildings.json), blurb, and a
+# small `effects` table using the same perks shop items may use (see ITEM_EFFECTS in locusts/shop.py).
+# Where a house sits matters too, since farther buildings take longer to walk to.
+
+[[house]]
+id = "harnwell"
+name = "Harnwell"
+map_name = "Harnwell College House"
+blurb = "High-rise singles: sleep restores energy 5% faster."
+effects = { sleep_regen = 0.05 }
+
+[[house]]
+id = "harrison"
+name = "Harrison"
+map_name = "Harrison College House"
+blurb = "The front desk always knows a gig: +5% task pay."
+effects = { task_pay = 0.05 }
+
+[[house]]
+id = "rodin"
+name = "Rodin"
+map_name = "Rodin College House"
+blurb = "Study lounges on every floor: +5% training XP."
+effects = { training_xp = 0.05 }
+
+[[house]]
+id = "du_bois"
+name = "Du Bois"
+map_name = "Du Bois College House"
+blurb = "A close-knit house that keeps quiet hours: each hour of sleep counts 5% more toward rest."
+effects = { rest_bonus = 0.05 }
+
+[[house]]
+id = "gutmann"
+name = "Gutmann"
+map_name = "Gutmann College House"
+blurb = "The newest house, with the best AC: work burns 5% less energy."
+effects = { work_energy_saving = 0.05 }
+
+[[house]]
+id = "gregory"
+name = "Gregory"
+map_name = "Class of 1925 (Gregory College House)"
+blurb = "Shared kitchens on every hall: meals cost 10% less."
+effects = { meal_discount = 0.10 }
+
+[[house]]
+id = "stouffer"
+name = "Stouffer"
+map_name = "Stouffer College House"
+blurb = "A shortcut onto Locust Walk: walks 5% faster."
+effects = { travel_speed = 0.05 }
+
+[[house]]
+id = "english"
+name = "Kings Court English"
+map_name = "English College House"
+blurb = "Its own dining hall downstairs: meals cost 10% less."
+effects = { meal_discount = 0.10 }
+
+[[house]]
+id = "hill"
+name = "Hill"
+map_name = "Hill College House"
+blurb = "Everyone studies in the atrium: +5% training XP."
+effects = { training_xp = 0.05 }
+
+[[house]]
+id = "lauder"
+name = "Lauder"
+map_name = "Lauder College House"
+blurb = "Suites with real beds: sleep restores energy 5% faster."
+effects = { sleep_regen = 0.05 }

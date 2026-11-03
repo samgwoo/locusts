@@ -1,0 +1,205 @@
+# Shop items, loaded by locusts/shop.py.
+#
+# Each item has an id, name, category (a key of [categories]), price, blurb, and `effects` table using
+# the perk names in locusts/perks.py (only the ones shop.py allows). Optional fields:
+#   weekly   = true    a subscription, billed every config.subscription_days until cancelled or broke
+#   swag     = 20      what owning it adds to the pet's swag; a permanent item's swag is under its price
+#   replaces = "id"    an upgrade: needs that item, and buying it trades the old one in
+#   swipes   = 14      meals each billing period, reset at renewal
+#   wear     = "head"  something the pet wears, drawn on it on the map (see shop.WEAR_SLOTS); in each slot it
+#                      wears the one with the most swag
+
+[categories]
+gear = "Gear"
+style = "Wardrobe"
+dorm = "Dorm room"
+plans = "Subscriptions"
+travel = "Getting around"
+
+[[item]]
+id = "thinkpad"
+name = "Used ThinkPad"
+category = "gear"
+price = 60
+swag = 20
+blurb = "+10% training XP. The keyboard is still great."
+effects = { training_xp = 0.10 }
+
+[[item]]
+id = "macbook"
+name = "MacBook Pro"
+category = "gear"
+price = 180
+swag = 70
+replaces = "thinkpad"
+blurb = "+20% training XP. Trades in your ThinkPad."
+effects = { training_xp = 0.20 }
+
+[[item]]
+id = "headphones"
+name = "Noise-Cancelling Headphones"
+category = "gear"
+price = 90
+swag = 35
+wear = "ears"
+blurb = "+10% task pay, and work burns 10% less energy."
+effects = { task_pay = 0.10, work_energy_saving = 0.10 }
+
+[[item]]
+id = "keyboard"
+name = "Mechanical Keyboard"
+category = "gear"
+price = 120
+swag = 30
+blurb = "+10% task pay. Everyone in the library can hear it."
+effects = { task_pay = 0.10 }
+
+[[item]]
+id = "ipad"
+name = "iPad and Pencil"
+category = "gear"
+price = 150
+swag = 50
+blurb = "+10% training XP, on top of a laptop's. Handwritten notes, but make it digital."
+effects = { training_xp = 0.10 }
+
+[[item]]
+id = "hoodie"
+name = "Penn Hoodie"
+category = "style"
+price = 40
+swag = 30
+wear = "shirt"
+blurb = "Red, with PENN across the chest. Shows on your pet."
+effects = {}
+
+[[item]]
+id = "cap"
+name = "Penn Cap"
+category = "style"
+price = 25
+swag = 18
+wear = "head"
+blurb = "A red ballcap for game days. Shows on your pet."
+effects = {}
+
+[[item]]
+id = "vest"
+name = "Patagonia Vest"
+category = "style"
+price = 130
+swag = 100
+wear = "outer"
+blurb = "The Wharton uniform. Shows on your pet."
+effects = {}
+
+[[item]]
+id = "parka"
+name = "Canada Goose Parka"
+category = "style"
+price = 450
+swag = 340
+wear = "outer"
+blurb = "For the walk from the Quad to Huntsman in February. Shows on your pet, over a vest if it has one."
+effects = {}
+
+[[item]]
+id = "sunglasses"
+name = "Ray-Bans"
+category = "style"
+price = 170
+swag = 130
+wear = "eyes"
+blurb = "Indoors too. Shows on your pet."
+effects = {}
+
+[[item]]
+id = "topper"
+name = "Memory Foam Topper"
+category = "dorm"
+price = 50
+swag = 15
+blurb = "Sleep restores energy 20% faster."
+effects = { sleep_regen = 0.20 }
+
+[[item]]
+id = "curtains"
+name = "Blackout Curtains"
+category = "dorm"
+price = 30
+swag = 10
+blurb = "Each hour of sleep counts 10% more toward tomorrow's rest."
+effects = { rest_bonus = 0.10 }
+
+[[item]]
+id = "fridge"
+name = "Mini Fridge"
+category = "dorm"
+price = 70
+swag = 25
+blurb = "A pet that gets hungry at home has a full meal at the normal price instead of DoorDash."
+effects = { home_meals = true }
+
+[[item]]
+id = "espresso"
+name = "Espresso Machine"
+category = "dorm"
+price = 110
+swag = 30
+blurb = "Your own café at home: work burns 10% less energy."
+effects = { work_energy_saving = 0.10 }
+
+[[item]]
+id = "blanket"
+name = "Weighted Blanket"
+category = "dorm"
+price = 65
+swag = 10
+blurb = "Sleep restores energy 15% faster."
+effects = { sleep_regen = 0.15 }
+
+[[item]]
+id = "leds"
+name = "LED Strip Lights"
+category = "dorm"
+price = 25
+swag = 18
+blurb = "Pure vibes. Nothing but swag."
+effects = {}
+
+[[item]]
+id = "meal_plan"
+name = "Meal Plan"
+category = "plans"
+price = 55
+weekly = true
+swipes = 14
+blurb = "14 swipes a week. Feeding uses a swipe first, and a starving pet swipes in wherever it is. Unused swipes expire."
+effects = {}
+
+[[item]]
+id = "ai"
+name = "AI Subscription"
+category = "plans"
+price = 20
+weekly = true
+blurb = "+15% training XP and +15% task pay."
+effects = { training_xp = 0.15, task_pay = 0.15 }
+
+[[item]]
+id = "indego"
+name = "Indego Membership"
+category = "travel"
+price = 40
+swag = 15
+blurb = "Bike share: your pet gets around campus 50% faster."
+effects = { travel_speed = 0.5 }
+
+[[item]]
+id = "scooter"
+name = "Electric Scooter"
+category = "travel"
+price = 160
+swag = 45
+blurb = "Your pet gets around 40% faster, on top of Indego."
+effects = { travel_speed = 0.4 }

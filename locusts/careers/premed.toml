@@ -1,0 +1,172 @@
+# Pre-Med career upgrades. Field reference is in tech.toml; balance is in career_skill_trees.xlsx.
+#
+# Signature mechanic: GPA. Every pet has one and events move it, but Pre-Med's top roles need it high and
+# The Gunner's perks protect and use it. Pre-Med is also the career that takes care of other pets, which
+# isn't built yet; The Gunner, Wet Lab experiments and roles, and Clinical Hours' pay perks work.
+
+[career]
+id = "premed"
+name = "Pre-Med"
+summary = "Leans on GPA: top roles need one, and perks soften the hits. Also the career that takes care of other pets"
+
+[[path]]
+id = "gunner"
+name = "The Gunner"
+focus = "GPA: protect it, then weaponize it"
+buildings = ["van_pelt"]
+
+[[path.tier]]
+name = "Front Row Seat"
+perks = ["Events cost half as much GPA"]
+effects = { gpa_loss_saving = 0.5 }
+
+[[path.tier]]
+name = "Office Hours Regular"
+perks = ["Recover 0.1 GPA each week you train at Van Pelt on at least four days (up to 4.0)"]
+effects = { weekly_gpa = 0.1, weekly_gpa_days = 4 }
+
+[[path.tier]]
+name = "Committee Letter"
+perks = ["While your GPA is 3.7 or higher, apply to any role you're one skill short of"]
+effects = { referral_gpa = 3.7 }
+
+[[path.tier]]
+name = "Summa Track"
+perks = ["+50% skill gain while your GPA is 3.9 or higher"]
+effects = { gpa_xp_bonus = 0.5 }
+
+[[path.tier]]
+name = "Curve Wrecker"
+perks = ["At every fair, applicants to your roles with a lower GPA than yours are cut"]
+effects = { curve_wrecker = true }
+
+[[path]]
+id = "clinical"
+name = "Clinical Hours"
+focus = "Earn by taking care of other pets"
+buildings = ["goddard_richards"]
+
+[[path.tier]]
+name = "EMT Certified"
+later = [
+    "Get pinged when a pet on your server is starving or exhausted, and earn a tenth of a week's task pay for feeding it or walking it home",
+]
+
+[[path.tier]]
+name = "Medical Scribe"
+perks = ["Earn 30% of normal task pay while your pet sleeps"]
+effects = { sleep_pay = 0.30 }
+
+[[path.tier]]
+name = "Night Shift"
+perks = ["Tasks pay 40% more, but work burns 25% more energy"]
+effects = { task_pay = 0.40, work_energy = 0.25 }
+
+[[path.tier]]
+name = "Bedside Manner"
+later = [
+    "Rescues pay three times as much, and your rescue record lets you qualify for clinical roles one skill short",
+]
+
+[[path.tier]]
+name = "Attending"
+later = [
+    "Open a clinic where other pets pay you to fully restore their sleep, at a price you set up to a quarter of a week's task pay",
+]
+
+[[path]]
+id = "wetlab"
+name = "The Wet Lab"
+focus = "Long experiments that run while you're away"
+buildings = ["chem", "wistar"]
+
+[[path.tier]]
+name = "Pipette Calibration"
+perks = [
+    "Start a 12-hour experiment that keeps running after your pet leaves, adding about 10% to its skill gain",
+]
+effects = { experiments = 1, experiment_bonus = 0.10 }
+
+[[path.tier]]
+name = "The Western Blot Finally Worked"
+later = [
+    "Experiments succeed 1 in 3 times instead of 1 in 4, and a success counts as a \"project\"",
+]
+
+[[path.tier]]
+name = "Contaminated Culture"
+later = ["Failed experiments drop a random rare item"]
+
+[[path.tier]]
+name = "Wistar Badge"
+perks = [
+    "Run two experiments at once",
+    "Unlocks biomedical research roles that pay 80% but only Wet Lab pets can apply to",
+]
+effects = { experiments = 1, unlocks = ["biomed"] }
+
+[[path.tier]]
+name = "First Author"
+perks = ["You win any biomedical research role you meet the requirements for without a minigame"]
+later = ["Plus a gold-trimmed lab coat"]
+effects = { wins_outright = ["biomed"] }
+
+# Job fair roles.
+
+[[role]]
+id = "penn_med_cra"
+company = "Penn Medicine"
+title = "Clinical Research Assistant"
+pay = 0.8
+
+[[role]]
+id = "kaplan_tutor"
+company = "Kaplan"
+title = "MCAT Tutor"
+requires = { gunner = 1 }
+gpa = 3.4
+pay = 1.0
+
+[[role]]
+id = "perelman_surp"
+company = "Perelman School of Medicine"
+title = "Summer Undergraduate Research Fellow"
+requires = { gunner = 2 }
+gpa = 3.6
+pay = 1.1
+
+[[role]]
+id = "hup_scribe"
+company = "HUP Emergency Department"
+title = "Medical Scribe"
+requires = { clinical = 1 }
+pay = 1.0
+
+[[role]]
+id = "penn_ems"
+company = "Penn Presbyterian"
+title = "EMT Intern"
+requires = { clinical = 2 }
+pay = 1.1
+
+[[role]]
+id = "chop_fellow"
+company = "Children's Hospital of Philadelphia"
+title = "Summer Research Fellow"
+requires = { wetlab = 1 }
+pay = 1.0
+
+[[role]]
+id = "monell_intern"
+company = "Monell Chemical Senses Center"
+title = "Lab Intern"
+requires = { wetlab = 2 }
+gpa = 3.5
+pay = 1.1
+
+[[role]]
+id = "wistar_fellow"
+company = "Wistar Institute"
+title = "Biomedical Research Fellow"
+unlock = "biomed"
+pay = 0.8

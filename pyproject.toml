@@ -1,0 +1,35 @@
+[project]
+name = "locusts"
+version = "0.1.0"
+description = "Multiplayer pixel-art campus pet game for Penn"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "httpx>=0.27",
+]
+map = [
+    "numpy>=2",
+    "pillow>=11",
+    "scipy>=1.14",
+    "shapely>=2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["locusts"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "travel: pets walk at the configured speed instead of arriving the moment they're sent",
+    "houses: college houses keep their perks",
+]

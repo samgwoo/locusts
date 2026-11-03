@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Locusts</title>
+<link rel="stylesheet" href="/static/campus/style.css">
+</head>
+<body>
+<div id="world"></div>
+<div id="labels"></div>
+
+<div id="hud">
+  <section id="pet-card" class="panel" hidden>
+    <div id="portrait-box"><div id="portrait" class="sprite"></div></div>
+    <h1 id="pet-name"></h1>
+    <div id="pet-status"></div>
+    <div class="stats">
+      <i data-icon="food"></i><span class="label">Fullness</span>
+      <div class="bar leaf"><div id="fullness-bar"></div></div><b id="fullness"></b>
+      <i data-icon="energy"></i><span class="label">Energy</span>
+      <div class="bar brick"><div id="energy-bar"></div></div><b id="energy"></b>
+    </div>
+    <div id="money-row"><i data-icon="coin"></i><span id="money"></span></div>
+    <div id="job-row" hidden><i data-icon="fair"></i><span id="job"></span></div>
+    <div id="badges"></div>
+  </section>
+
+  <section id="clock-card" class="panel">
+    <i id="clock-icon" data-icon="sun"></i>
+    <div><span id="clock-time"></span><small id="clock-weather" hidden title="Philadelphia, via Open-Meteo"></small>
+      <small id="clock-next"></small>
+      <button id="clock-term" class="quiet" hidden title="Standings"></button></div>
+  </section>
+
+  <nav id="menu">
+    <button id="upgrades-button"><i data-icon="upgrade"></i><span>Upgrades</span></button>
+    <button id="shop-button"><i data-icon="coin"></i><span>Shop</span></button>
+    <button id="portfolio-button" hidden><i data-icon="coin"></i><span>Portfolio</span></button>
+    <button id="fair-button"><i data-icon="fair"></i><span>Job fair</span></button>
+    <button id="leaderboard-button"><i data-icon="upgrade"></i><span>Houses</span></button>
+    <button id="places-button"><i data-icon="home"></i><span>Places</span></button>
+    <button id="find-button"><i data-icon="center"></i><span>Find pet</span></button>
+    <button id="signout-button" class="quiet" hidden><i data-icon="lock"></i><span>Sign out</span></button>
+  </nav>
+  <section id="places" class="panel" hidden></section>
+
+  <section id="building-card" class="panel" hidden></section>
+
+  <section id="event-card" class="panel" hidden></section>
+
+  <nav id="actions" class="panel" hidden>
+    <button data-action="feed"><i data-icon="food"></i>Feed<small id="feed-price"></small></button>
+    <button data-action="coffee"><i data-icon="coffee"></i>Coffee<small id="coffee-price"></small></button>
+    <button data-action="sleep"><i data-icon="sleep"></i>Sleep<small>at home</small></button>
+    <button data-action="wake"><i data-icon="sun"></i>Wake<small>daytime</small></button>
+    <button data-action="recall"><i data-icon="home"></i>Pull out<small>go home</small></button>
+  </nav>
+
+  <div id="zoom">
+    <button id="zoom-in" title="Zoom in"><i data-icon="plus"></i></button>
+    <button id="zoom-out" title="Zoom out"><i data-icon="minus"></i></button>
+  </div>
+  <div id="attribution"></div>
+  <div id="toasts"></div>
+
+  <div id="backdrop" hidden>
+    <section id="upgrades" class="panel modal" hidden>
+      <header>
+        <i data-icon="upgrade"></i><h2 id="upgrades-title">Upgrades</h2>
+        <button class="x" data-close title="Close"><i data-icon="close"></i></button>
+      </header>
+      <div class="rules" title="Max out one path and take a second to tier 2. The third path locks. Training a path at its buildings earns that path's XP.">
+        <span class="chip"><i data-icon="star"></i>Max out one path</span>
+        <span class="chip"><i data-icon="upgrade"></i>A second to tier 2</span>
+        <span class="chip"><i data-icon="lock"></i>The third locks</span>
+        <span class="chip"><i data-icon="train"></i>Train at a path's buildings for its XP</span>
+      </div>
+      <div id="upgrade-grid"></div>
+    </section>
+
+    <section id="shop" class="panel modal" hidden>
+      <header>
+        <i data-icon="coin"></i><h2>Shop</h2>
+        <button class="x" data-close title="Close"><i data-icon="close"></i></button>
+      </header>
+      <div id="shop-body"></div>
+    </section>
+
+    <section id="portfolio" class="panel modal" hidden>
+      <header>
+        <i data-icon="coin"></i><h2>Portfolio</h2>
+        <button class="x" data-close title="Close"><i data-icon="close"></i></button>
+      </header>
+      <div id="portfolio-body"></div>
+      <form id="portfolio-form">
+        <input id="portfolio-amount" type="number" min="0.01" step="0.01" placeholder="Amount" aria-label="Amount">
+        <button type="submit" data-move="invest"><i data-icon="upgrade"></i>Invest</button>
+        <button type="submit" data-move="withdraw" class="quiet"><i data-icon="coin"></i>Withdraw</button>
+      </form>
+    </section>
+
+    <section id="fair" class="panel modal" hidden>
+      <header>
+        <i data-icon="fair"></i><h2 id="fair-title">Job fair</h2>
+        <button class="x" data-close title="Close"><i data-icon="close"></i></button>
+      </header>
+      <div id="fair-body"></div>
+    </section>
+
+    <section id="leaderboard" class="panel modal" hidden>
+      <header>
+        <i data-icon="upgrade"></i><h2>Houses</h2>
+        <button class="x" data-close title="Close"><i data-icon="close"></i></button>
+      </header>
+      <div id="leaderboard-body"></div>
+    </section>
+
+    <section id="results" class="panel modal" hidden>
+      <header>
+        <i data-icon="star"></i><h2 id="results-title">Final ranking</h2>
+        <button class="x" data-close title="Close"><i data-icon="close"></i></button>
+      </header>
+      <div id="results-body"></div>
+    </section>
+
+    <section id="auth" class="panel modal" hidden>
+      <header><i data-icon="lock"></i><h2 id="auth-title">Sign in</h2></header>
+      <p id="auth-intro"></p>
+      <form id="auth-form">
+        <label id="auth-email-row"><span>Email</span>
+          <input id="auth-email" type="email" autocomplete="username" placeholder="you@email.com" maxlength="254"></label>
+        <label id="auth-password-row"><span id="auth-password-label">Password</span>
+          <input id="auth-password" type="password" autocomplete="current-password" maxlength="128"></label>
+        <button type="submit"><i data-icon="check"></i><span id="auth-submit">Sign in</span></button>
+      </form>
+      <p class="auth-links">
+        <button type="button" class="quiet" data-auth="signin">Sign in</button>
+        <button type="button" class="quiet" data-auth="signup">Create an account</button>
+        <button type="button" class="quiet" data-auth="forgot">Forgot password?</button>
+      </p>
+    </section>
+
+    <section id="hatch" class="panel modal" hidden>
+      <h2 id="hatch-title">A larva appears!</h2>
+      <div id="hatch-sprite"></div>
+      <div id="hatch-intro"></div>
+      <form id="hatch-form">
+        <input id="hatch-name" maxlength="20" placeholder="gregor" autocomplete="off">
+        <div id="career-options" role="radiogroup" aria-label="Career"></div>
+        <h3 id="house-heading">College house</h3>
+        <div id="house-options" role="radiogroup" aria-label="College house"></div>
+        <button type="submit"><i data-icon="sun"></i><span id="hatch-submit">Hatch</span></button>
+      </form>
+    </section>
+  </div>
+</div>
+
+<script type="module" src="/static/campus/main.mjs"></script>
+</body>
+</html>

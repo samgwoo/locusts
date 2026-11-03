@@ -1,0 +1,228 @@
+# Tech career upgrades, structured like Bloons TD 6 monkey upgrades. Design notes are in the
+# "Careers and upgrade paths" section of docs/Penn Campus Pet Game Design Doc.md, and every upgrade is
+# scored in career_skill_trees.xlsx.
+#
+# Three paths of five tiers. A pet can take one path to tier 5 and a second path to tier 2; the third
+# stays locked. Tiers 1-2 are small, broadly useful boosts, since that's all a side path ever gets.
+# Each tier 5 changes a rule of the game instead of adding a bigger number.
+#
+# Each path trains at its own buildings, and no building trains two careers, so other players can read
+# your build from where your pet trains.
+#
+# Career fields:
+#   summary    the career's signature mechanic, shown when a new player picks a career
+# Path fields:
+#   focus      what the path is about
+#   buildings  where it trains; must be buildings in config.py
+# Tier fields:
+#   perks      what it does now; each needs an effects table that makes it true
+#   effects    the mechanics, using the keys in locusts/perks.py (Perks documents each one)
+#   later      what it will do once the systems it needs exist (task events and GPA, items, pets
+#              interacting). Shown to players as not active yet.
+# Tier costs are the same on every path and live in config.py (tier_sessions).
+#
+# Role fields (job fair roles, at the end of each file):
+#   pay        weekly pay as a multiple of config.internship_pay_per_week
+#   requires   path id -> lowest tier an applicant needs
+#   unlock     only pets whose perks unlock this key see the role (effects: unlocks = ["key"])
+#   top        applicants need a raw minigame score in the top N of everyone who played at the fair
+#   lost_on_exhaustion, reserved: see Role in locusts/upgrades.py
+# Every fair posts a few regular roles per career, always including one with no requirements.
+
+[career]
+id = "tech"
+name = "Tech"
+summary = "The baseline tree: one path wins minigames, one makes money, one unlocks exclusive roles"
+item = "headphones"
+# Shape: tech pays well, but sessions are exhausting. Not wired into the simulation yet.
+energy_drain_multiplier = 1.25
+task_pay_multiplier = 1.3
+
+[[path]]
+id = "grind"
+name = "The Grind"
+focus = "Job fair minigames"
+buildings = ["towne", "amy_gutmann"]
+
+[[path.tier]]
+name = "CIS 1200: OCaml Trauma"
+flavor = "Recursion until it clicks, or you do."
+perks = ["+10% time in job fair minigames"]
+effects = { fair_time = 0.10 }
+
+[[path.tier]]
+name = "CIS 1210: Big-O Nightmares"
+flavor = "Your sleep schedule is O(n!)."
+perks = ["One free retry per job fair: play two scored runs and keep the better one"]
+effects = { fair_retries = 1 }
+
+[[path.tier]]
+name = "LeetCode Streak"
+flavor = "Day 47. The two-sum problem visits you in dreams."
+perks = [
+    "+3% minigame score for each consecutive day you train, up to +30%, reset if you skip a day",
+]
+effects = { streak_score = 0.03 }
+
+[[path.tier]]
+name = "Quant-pilled"
+flavor = "You no longer see people. You see edge."
+perks = ["Unlocks quant roles that pay 75% more but need a top-3 minigame score"]
+effects = { unlocks = ["quant"] }
+
+[[path.tier]]
+name = "Market Maker"
+perks = [
+    "At every fair, see who applied to each role before your applications lock, and quant roles only need a top-4 score",
+]
+effects = { see_applicants = true, top_cutoff = 1 }
+
+[[path]]
+id = "industry"
+name = "Big Tech"
+focus = "Money"
+buildings = ["moore"]
+
+[[path.tier]]
+name = "GitHub Green Squares"
+flavor = "Commit messages: 'fix', 'fix 2', 'pls work', 'final', 'final final'."
+perks = ["Tasks pay +10%"]
+effects = { task_pay = 0.10 }
+
+[[path.tier]]
+name = "Handshake Resume"
+flavor = "One page. 10-point font. 0.3-inch margins. Still somehow two pages."
+perks = ["Apply to one extra role at two fairs"]
+effects = { extra_applications = 1, extra_application_fairs = 2 }
+
+[[path.tier]]
+name = "Referral"
+perks = ["Once per fair, qualify for a role you're one skill short of"]
+effects = { referrals = 1 }
+
+[[path.tier]]
+name = "L4 Promo"
+perks = ["Internship pay +50%"]
+effects = { internship_pay = 0.5 }
+
+[[path.tier]]
+name = "Rest and Vest"
+flavor = "Senior Staff Engineer. Calendar: 100% meetings. Commits: 0."
+perks = [
+    "Once you've held an internship, you keep 75% of its pay for the rest of the semester, even after losing it",
+]
+effects = { vesting = 0.75 }
+
+[[path]]
+id = "research"
+name = "The Lab"
+focus = "Exclusive roles (engineering research)"
+buildings = ["levine", "skirkanich"]
+
+[[path.tier]]
+name = "Email 40 Professors"
+flavor = "Dear Professor, I have read all of your papers (the abstracts)."
+perks = ["Unlocks research-assistant tasks at Levine that also give +10% skill gain"]
+effects = { task_site = { building = "levine", name = "Research assistant", xp = 0.10 } }
+
+[[path.tier]]
+name = "Overfit"
+flavor = "99.8% accuracy. On the training set."
+later = ["Your first model counts as a \"project\" for role requirements"]
+
+[[path.tier]]
+name = "Reviewer 2"
+flavor = "Reviewer 2 says the method 'lacks novelty'. Reviewer 2 is your advisor's rival."
+perks = ["After a job fair rejection, get +25% minigame score at the next fair"]
+effects = { rejection_score = 0.25 }
+
+[[path.tier]]
+name = "GRASP Lab Keycard"
+perks = [
+    "Unlocks robotics and hardware roles that pay 80% of a normal role, but only Lab pets can apply",
+]
+effects = { unlocks = ["robotics"] }
+
+[[path.tier]]
+name = "Pennovation Spinout"
+perks = ["Your startup pays a third of an internship's weekly pay for the rest of the semester"]
+later = ["Plus a small robot that follows your pet"]
+effects = { startup_pay = 0.333 }
+
+# Job fair roles.
+
+[[role]]
+id = "pennovation_startup"
+company = "Pennovation Center startup"
+title = "Founding Engineer Intern"
+pay = 0.8
+
+[[role]]
+id = "comcast_swe"
+company = "Comcast"
+title = "Software Engineering Intern"
+pay = 0.8
+
+[[role]]
+id = "google_step"
+company = "Google"
+title = "STEP Intern"
+requires = { industry = 1 }
+pay = 1.0
+
+[[role]]
+id = "meta_swe"
+company = "Meta"
+title = "Software Engineer Intern"
+requires = { industry = 2 }
+pay = 1.1
+
+[[role]]
+id = "stripe_swe"
+company = "Stripe"
+title = "Software Engineer Intern"
+requires = { industry = 3 }
+pay = 1.25
+
+[[role]]
+id = "amazon_sde"
+company = "Amazon"
+title = "SDE Intern"
+requires = { grind = 1 }
+pay = 1.0
+
+[[role]]
+id = "palantir_fde"
+company = "Palantir"
+title = "Forward Deployed Engineer Intern"
+requires = { grind = 2 }
+pay = 1.1
+
+[[role]]
+id = "grasp_ra"
+company = "GRASP Lab"
+title = "Undergraduate Researcher"
+requires = { research = 1 }
+pay = 0.9
+
+[[role]]
+id = "msr_intern"
+company = "Microsoft Research"
+title = "Research Intern"
+requires = { research = 2 }
+pay = 1.1
+
+[[role]]
+id = "jane_street_quant"
+company = "Jane Street"
+title = "Quantitative Trader Intern"
+unlock = "quant"
+top = 3
+pay = 1.75
+
+[[role]]
+id = "boston_dynamics"
+company = "Boston Dynamics"
+title = "Robotics Intern"
+unlock = "robotics"
+pay = 0.8
