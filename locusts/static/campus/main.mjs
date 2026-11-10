@@ -344,7 +344,14 @@ function placeTags() {
   }
 }
 
-// Walks the locust along the pet's trip, picking it up partway after a reload, or stands it at its spot.
+// While the pet is flying, sit it above the center of the window so the roofs underneath stay in view.
+// The shift is capped, or a high cruise on a short window would push the pet off the top.
+function flightCamera() {
+  const above = Math.min(locust.lift * view.z, innerHeight * 0.28);
+  return [locust.x, locust.y - locust.lift + above / view.z];
+}
+
+// Flies the locust along the pet's trip, picking it up partway after a reload, or stands it at its spot.
 function movePet({ follow }) {
   locust.setAnimation(animationFor(pet));
   clearTimeout(arrivalTimer);
@@ -356,7 +363,7 @@ function movePet({ follow }) {
     const first = !locust.placed;
     locust.walk(trip, (pet.now - trip.start) * 1000);
     if (first) view.centerOn(locust.x, locust.y, { instant: true });
-    if (first || follow) view.follow = () => [locust.x, locust.y];
+    if (first || follow) view.follow = flightCamera;
     return;
   }
   const [x, y] = spotFor(pet);
