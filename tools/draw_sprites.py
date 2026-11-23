@@ -87,7 +87,7 @@ class Pose:
     far_arm: Arm = ((25, 28), (28, 27))
     antennae: tuple[Antenna, Antenna] = (((22, 3), (16, 2)), ((27, 2), (22, 1)))
     eye: str = "open"                            # open, closed, tired
-    wings: bool = False
+    wing: int | None = None                      # a flap phase (see WING), or None while it's folded
     pack: str = "worn"                           # worn, or set down on the ground beside it
     props: tuple = ()                            # drawn after the head, under the near arm
     wear: tuple = ()                             # shop item ids it has on (see WEARABLES)
@@ -116,13 +116,13 @@ def draw_frame(p: Pose) -> np.ndarray:
     if p.pack == "ground":
         _backpack(frame, [(6, 35), (14, 34), (15, GROUND), (7, GROUND)])
 
-    if p.wings:
+    if p.wing is not None:
+        # One membrane behind the thorax. The phases are one beat, and the body covers the root.
+        root, tips = WING[p.wing]
         wing = Layer()
-        root = b(20, 22)
-        tips = [b(13, 9), b(6, 11), b(3, 18), b(5, 25)]
-        wing.poly([root, *tips], CREAM)
+        wing.poly([b(*root), *(b(*t) for t in tips)], CREAM)
         for t in tips[:-1]:
-            wing.line([root, t], INK)
+            wing.line([b(*root), b(*t)], INK)
         stamp(frame, wing)
 
     abdomen = Layer()
@@ -435,6 +435,17 @@ FAR_UP = ((30, 32), (28, 39), (31, 39))
 NEAR_DOWN = ((27, 38), (25, GROUND), (29, GROUND))
 FAR_DOWN = ((24, 38), (20, GROUND), (24, GROUND))
 ARM_FWD, ARM_BACK = ((31, 25), (34, 20)), ((24, 26), (21, 29))
+# Airborne body, shared by the glide frame and the flap. The wing is the only thing that changes between beats.
+AIR = replace(STAND, dy=-2, near_leg=((30, 34), (26, 38), (29, 39)), far_leg=((27, 35), (23, 39), (26, 40)),
+              near_arm=((30, 23), (33, 21)), far_arm=((26, 22), (29, 20)),
+              antennae=(((20, 4), (14, 6)), ((25, 3), (19, 4))))
+# Root, then the outer edge from the front of the wing to the back. Raised, reaching, down, and recovering.
+WING = [
+    ((20, 20), [(15, 6), (9, 4), (4, 8), (6, 15)]),
+    ((20, 22), [(13, 9), (6, 11), (3, 18), (5, 25)]),
+    ((20, 24), [(14, 17), (7, 23), (4, 31), (8, 36)]),
+    ((20, 22), [(15, 12), (8, 16), (4, 23), (8, 30)]),
+]
 
 ANIMATIONS: dict[str, list[tuple[Pose, int]]] = {
     "idle": [
@@ -449,9 +460,7 @@ ANIMATIONS: dict[str, list[tuple[Pose, int]]] = {
         (replace(STAND, dy=-3, near_leg=((25, 37), (21, 42), (18, 44)), far_leg=((22, 37), (18, 42), (15, 43)),
                  near_arm=((30, 19), (32, 15)), far_arm=((26, 19), (28, 15)),
                  antennae=(((20, 4), (14, 6)), ((25, 3), (19, 4)))), 90),
-        (replace(STAND, dy=-2, near_leg=((30, 34), (26, 38), (29, 39)), far_leg=((27, 35), (23, 39), (26, 40)),
-                 near_arm=((30, 23), (33, 21)), far_arm=((26, 22), (29, 20)), wings=True,
-                 antennae=(((20, 4), (14, 6)), ((25, 3), (19, 4)))), 120),
+        (replace(AIR, wing=1), 120),
         (replace(CROUCH, dy=2), 120),
     ],
     "train": [
@@ -486,6 +495,8 @@ ANIMATIONS: dict[str, list[tuple[Pose, int]]] = {
         (replace(JOG, dy=0, near_leg=NEAR_DOWN, far_leg=FAR_DOWN, near_arm=((28, 28), (30, 26)),
                  props=(headband, flung(3))), 110),
     ],
+    # One wingbeat while it's flying. The client plays this the whole time the pet is in the air.
+    "fly": [(replace(AIR, wing=phase), 90) for phase in range(4)],
 }
 
 

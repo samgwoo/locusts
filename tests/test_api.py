@@ -277,7 +277,7 @@ def test_sprites_and_fonts_are_served(client):
                  "/static/fonts/silkscreen/Silkscreen-Regular.ttf", "/static/fonts/pixelify-sans/PixelifySans.ttf"):
         assert client.get(path).status_code == 200, path
     meta = client.get("/static/sprites/locust.json").json()
-    assert {"idle", "hop", "train", "workout", "task", "sleep", "tired"} <= set(meta["animations"])
+    assert {"idle", "hop", "fly", "train", "workout", "task", "sleep", "tired"} <= set(meta["animations"])
 
 
 def test_locust_walk_practice_round_trip(client):
